@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>{{plain_message}}</p>
+    <hr>
+    <p>{{binary_message}}</p>
+    <hr>
+    <p>process</p>
+    <p>plain_message_list</p>
+    <div class="grid-container" >
+        <div class="item1" *ngFor="let num of plain_message_list">{{num}}</div>
+    </div>
+    <hr>
+    <p>encrypted_message_list</p>
+    <div class="grid-container">
+        <div class="item1" *ngFor="let num of encrypted_message_list">{{num}}</div>
+    </div>
+    <p>decrypted_message_list</p>
+    <div class="grid-container">
+        <div class="item1" *ngFor="let num of decrypted_message_list">{{num}}</div>
+    </div>
+</body>
+</html>
