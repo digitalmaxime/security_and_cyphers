@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="https://api.agify.io/" method="get">
+        <label for="name">Enter name:</label>
+        <input name="name" type="text">  
+        <hr>
+        <button type="submit">get age (form action)!</button>
+    </form>
+    
+    <br>
+    <br>
+    
+    <label for="name">Enter name2:</label>
+    <input style="margin:auto" type="text" #username>  
+    <hr>
+    <button (click)="getAgeFromName(username.value)">get age (http)!</button>
+    
+    <br>
+    <br>
+
+    <label for="name">Enter name3:</label>
+    <input style="margin:auto" type="text" #username>  
+    <hr>
+    <button (click)="getStuffFromLocalServer(username.value)">get age (http local)!</button>
+</body>
+</html>
