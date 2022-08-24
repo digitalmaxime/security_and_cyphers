@@ -1,4 +1,4 @@
-export function cypherFunction (array: number[], key: number) {
+module.exports.cypherFunction = (array, key) => {
     for (let i = 0; i < key; ++i) {
         const lastEle = array.pop();
         if (lastEle !== undefined) {
@@ -8,7 +8,7 @@ export function cypherFunction (array: number[], key: number) {
     return array;
 }
 
-export function XOR(arr: number [], arr2: number[]) {
+module.exports.XOR = (arr, arr2) => {
     if (arr.length != arr2.length) {
         throw new Error("array lengths are not equal! XOR");
     }

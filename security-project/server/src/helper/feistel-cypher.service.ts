@@ -1,16 +1,12 @@
-import { Injectable } from '@angular/core';
-import { cypherFunction } from './helper/cypher-function';
-import { XOR } from './helper/cypher-function';
+const { cypherFunction } = require('./cypher-function');
+const { XOR } = require('./cypher-function');
 
-@Injectable({
-  providedIn: 'root'
-})
-export class FeistelCypherService {
-  key: number = 4;
+module.exports = class FeistelCypherService {
+  static key: number = 4;
   constructor() { 
   }
 
-  calculateCypher(binaryNumber: number): number {
+  static calculateCypher(binaryNumber: number): number {
     const listStr = binaryNumber.toString().split('');
     if (listStr.length % 2 !== 0) {
       console.log("ajusted..")

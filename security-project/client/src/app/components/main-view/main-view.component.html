@@ -8,10 +8,10 @@
 </head>
 <body>
     <label for="name">Enter word:</label>
-    <input style="margin:auto" type="text" #username>  
+    <input style="margin:auto" type="text" #word>  
     <hr>
-    <button (click)="displaycurrentWord(username.value)">Compute feistel!</button>
-    <button (click)="postStuffToLocalServer(username.value)">post word to server!</button>
+    <button (click)="computeFeistelOnWord(word.value)">Compute feistel! (encrypt in file backend)</button>
+    <button (click)="postStuffToLocalServer(word.value)">post word to server!</button>
 
     <br>
 

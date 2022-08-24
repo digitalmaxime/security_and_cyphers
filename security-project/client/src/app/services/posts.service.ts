@@ -32,7 +32,6 @@ export class PostsService {
   }
 
   getStuffFromLocalServer(name: string) {
-    console.log("sending name :" + name );
     let param = new HttpParams().set('name', name);
     console.log(param);
     console.log("param name: " + param.get("name"));
@@ -49,7 +48,7 @@ export class PostsService {
   }
   
   postStuffToLocalServer(name: string) {
-    console.log("name: " + name)
+    console.log("postStuffToLocalServer, name : " + name)
     this.httpClient.post<{message: string}>("http://localhost:3000/api/posts", { name: name })
       .subscribe((response) => {
         console.log(response);

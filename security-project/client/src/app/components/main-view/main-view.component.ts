@@ -4,7 +4,7 @@ import { Observable, Subscription, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { PostsService } from 'src/app/services/posts.service';
 import { Post } from 'src/app/models/post.model';
-import { FeistelCypherService } from 'src/app/services/feistel-cypher.service';
+import { FeistelService } from 'src/app/services/feistel.service';
 
 
 @Component({
@@ -15,7 +15,7 @@ import { FeistelCypherService } from 'src/app/services/feistel-cypher.service';
 export class MainViewComponent implements OnInit {
   private postsSub: Subscription = new Subscription();
   public posts: Post[] = [];
-  
+
   public currentWord: string = "";
   public currentWordASCIIes: number[] = [];
   public currentWordBinaries: number[] = [];
@@ -25,7 +25,11 @@ export class MainViewComponent implements OnInit {
   encrypted_message_list: number[] = [];
   decrypted_message_list: number[] = [];
 
-  constructor(private httpClient: HttpClient, private postService: PostsService, private cypherService: FeistelCypherService) {
+  constructor(
+    private httpClient: HttpClient,
+    private postService: PostsService,
+    private feistelService: FeistelService) {
+
   }
 
   ngOnInit(): void {
@@ -57,55 +61,12 @@ export class MainViewComponent implements OnInit {
   //     console.log(data);
   //   });
   // }
-  
+
   postStuffToLocalServer(name: string) {
     this.postService.postStuffToLocalServer(name);
   }
 
-  displaycurrentWord(word: string) {
-    this.currentWord = word;
-    this.currentWordASCIIes = this.createASCII(word);
-    this.currentWordBinaries = this.createBinariesFromASCIIes(this.currentWordASCIIes);
-    this.encrypted_message_list = this.currentWordBinaries.map((ele: number) => {
-      return this.cypherService.calculateCypher(ele);
-    })
-
-    this.decrypted_message_list = this.encrypted_message_list.map(ele => {
-      const binaryNum = parseInt(ele.toString(2))
-      return this.cypherService.calculateCypher(binaryNum);
-    })
-    this.currentWordEncrypted = this.encrypted_message_list.map((ele:number) => {
-      return String.fromCharCode(ele);
-    }).join('');
-    this.currentWordDecrypted = this.decrypted_message_list.map((ele:number) => {
-      return String.fromCharCode(ele);
-    }).join('');
-  }
-
-  createASCII(word: string): number[] {
-    const asciis = [];
-    for (let i = 0; i < word.length; i++) {
-      const asciiNum = word.charCodeAt(i);
-      asciis.push(asciiNum);
-    }
-    return asciis;
-  }
-  
-  createBinaryFromASCIIes(numbers: number[]): number {
-    const binaries = [];
-    for (let i = 0; i < numbers.length; i++) {
-      const bin = this.currentWordASCIIes[i].toString(2);
-      binaries.push(bin);
-    }
-    return parseInt(binaries.join(''));
-  }
-  
-  createBinariesFromASCIIes(numbers: number[]): number[] {
-    const binaries = [];
-    for (let i = 0; i < numbers.length; i++) {
-      const bin = this.currentWordASCIIes[i].toString(2);
-      binaries.push(parseInt(bin));
-    }
-    return binaries;
+  computeFeistelOnWord(word: string) {
+    this.feistelService.postFeistelEncryptionFromServer(word); // TODO: subscribe or something
   }
 }
