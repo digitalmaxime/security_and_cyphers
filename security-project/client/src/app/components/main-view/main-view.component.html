@@ -7,27 +7,48 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="https://api.agify.io/" method="get">
-        <label for="name">Enter name:</label>
-        <input name="name" type="text">  
-        <hr>
-        <button type="submit">get age (form action)!</button>
-    </form>
-    
-    <br>
-    <br>
-    
-    <label for="name">Enter name2:</label>
+    <label for="name">Enter word:</label>
     <input style="margin:auto" type="text" #username>  
     <hr>
-    <button (click)="getAgeFromName(username.value)">get age (http)!</button>
-    
-    <br>
+    <button (click)="displaycurrentWord(username.value)">Compute feistel!</button>
+    <button (click)="postStuffToLocalServer(username.value)">post word to server!</button>
+
     <br>
 
-    <label for="name">Enter name3:</label>
-    <input style="margin:auto" type="text" #username>  
+    <h4>current word : {{currentWord}}</h4>
+
+    <h4 style="align-self:center">plain letters</h4>
     <hr>
-    <button (click)="getStuffFromLocalServer(username.value)">get age (http local)!</button>
+    <div  style="display:flex; align-items:stretch;">
+        <div *ngFor="let letter of this.currentWord.split(''); index as i" style="padding:10px">
+            <h5>letter : {{letter}}</h5>
+            <div style="display:flex; flex-direction:column;">
+                <p>ascii : {{currentWordASCIIes[i]}}</p>
+                <hr>
+                <p>binary : {{currentWordBinaries[i]}}</p>
+            </div>
+        </div>
+    </div>
+
+    <h4 style="align-self:center">encrypted letters</h4>
+    <hr>
+    <div  style="display:flex; align-items:stretch;">
+        <div *ngFor="let letter of this.currentWord.split(''); index as i" style="padding:10px">
+            <p>decimal : {{encrypted_message_list[i]}}</p>
+            <p>binary : {{encrypted_message_list[i].toString(2)}}</p>
+            <p>letter : {{currentWordEncrypted[i]}}</p>
+        </div>
+    </div>
+
+    <h4 style="align-self:center">decrypted letters</h4>
+    <hr>
+    <div  style="display:flex; align-items:stretch;">
+        <div *ngFor="let letter of this.currentWord.split(''); index as i" style="padding:10px">
+            <p>decimal : {{decrypted_message_list[i]}}</p>
+            <p>binary : {{decrypted_message_list[i].toString(2)}}</p>
+            <p>letter : {{currentWordDecrypted[i]}}</p>
+        </div>
+    </div>
+
 </body>
 </html>

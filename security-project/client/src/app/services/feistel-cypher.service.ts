@@ -6,11 +6,18 @@ import { XOR } from './helper/cypher-function';
   providedIn: 'root'
 })
 export class FeistelCypherService {
-  key: number = 3;
+  key: number = 4;
   constructor() { 
   }
 
-  calculateCypher(arr: number[]): number[] {
+  calculateCypher(binaryNumber: number): number {
+    const listStr = binaryNumber.toString().split('');
+    if (listStr.length % 2 !== 0) {
+      console.log("ajusted..")
+      listStr.unshift('0');
+    }
+    const arr = listStr.map(ele => parseInt(ele));
+    
     let L = arr.slice(0, arr.length/2);
     let R = arr.slice(arr.length/2);
     for (let i = 0; i < 2; i++) {
@@ -22,6 +29,9 @@ export class FeistelCypherService {
     const temp = L;
     L = R;
     R = temp;
-    return L.concat(R);
+    const concatenatedInt = L.concat(R);
+    const concatenatedStr = concatenatedInt.map(ele => ele.toString());
+    const res = parseInt(concatenatedStr.join(''), 2)
+    return res;
   }
 }

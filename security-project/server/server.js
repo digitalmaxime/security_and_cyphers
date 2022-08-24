@@ -1,56 +1,95 @@
-// const http = require('http');
-const routes = require('./routes');
-
+const fs = require('fs');
 const express = require('express');
-const router = express.Router();
-const cors = require('cors');
-
+const debug = require("debug")("node-angular");
+const bodyParser = require('body-parser');
 const app = express();
 
-// use it before all route definitions
-app.use(cors());
-// app.use(cors({origin: '*'}));
+const normalizePort = val => {
+  var port = parseInt(val, 10);
 
-// Add headers before the routes are defined
-// app.use(function (req, res, next) {
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
 
-//     // Website you wish to allow to connect
-//     res.setHeader('Access-Control-Allow-Origin', 'localhost:4200');
+  if (port >= 0) {
+    // port number
+    return port;
+  }
 
-//     // Request methods you wish to allow
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  return false;
+};
 
-//     // Request headers you wish to allow
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+const onError = error => {
+  if (error.syscall !== "listen") {
+    throw error;
+  }
+  const bind = typeof port === "string" ? "pipe " + port : "port " + port;
+  switch (error.code) {
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+};
 
-//     // Set to true if you need the website to include cookies in the requests sent
-//     // to the API (e.g. in case you use sessions)
-//     // res.setHeader('Access-Control-Allow-Credentials', true);
+const onListening = () => {
+  const addr = server.address();
+  const bind = typeof port === "string" ? "pipe " + port : "port " + port;
+  debug("Listening on " + bind);
+};
 
-//     // Pass to next layer of middleware
-//     next();
-// });
+const port = normalizePort(process.env.PORT || "3000");
 
+app.set("port", port);
 
-// router.get('/localhost/', (req, res, next)=> {
-//     console.log("GET : ");
-//     res.write("hwllp");
-//     res.end();
-// });
-//     // res.sendFile(path.join(rootDir, 'views', 'try-exercice.html'));
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers", 
+    "Origin, X-Requested-With, Content-Type, Accept");
+    res.setHeader(
+      "Access-Control-Allow-Methods", 
+      "GET, POST, DELETE, OPTIONS")
+  next();
+})
 
-// router.post('/localhost/', (req, res, next)=> {
-//     console.log("POST : ")
-// });
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
-app.get("/", (req, res) => {
-    console.log(req.url);
-    console.log(req.body);
-    res.setHeader("Content-Type", "application/json");
-    res.writeHead(200);
-    res.end(`{"message": "This is a JSON response"}`);
+app.get("/api/posts", (req, res) => {
+    const posts = [
+        { id: "adsf",
+            title: "first title",
+            content: "my content"    
+        },
+        { id: "sffsad",
+            title: "second title",
+            content: "my content!"    
+        },
+    ];
+    res.status(200).json({
+        message: "Request succesful",
+        posts: posts
+    });
 });
 
-app.listen(3000, () => {
-    console.log('listening on port 3000');
-});
+app.post('/api/posts', (req, res, next) => {
+  const data = req.body;
+  console.log(data);
+  fs.appendFile('./data/names.txt', `\n${data.name}`, () => {});
+  res.status(201).json({
+    message: "Name added successfully!"
+  })
+})
+
+// const server = app.createServer(app);
+app.on("error", onError);
+app.on("listening", onListening);
+app.listen(port);
